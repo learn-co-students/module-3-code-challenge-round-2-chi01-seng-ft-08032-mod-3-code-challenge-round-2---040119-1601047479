@@ -1,7 +1,7 @@
 
 
 //event listeners
-function addBeerListeners(){
+const addBeerListeners = () => {
     const beerRow = document.getElementById('row')
     beerRow.addEventListener('click', e => {
         if(e.target.className === 'list-group-item'){
@@ -18,7 +18,7 @@ function addBeerListeners(){
 
 //functions
 
-function fetchAllBeers(){
+const fetchAllBeers = () =>{
     fetch('http://localhost:3000/beers')
     .then(response => response.json())
     .then(response => {
@@ -28,7 +28,7 @@ function fetchAllBeers(){
 }
 
 
-function renderBeers(beers) {
+const renderBeers = beers => {
     console.log(beers)
     const beerUl = document.getElementById('list-group')
     let beerLis = ''
@@ -39,7 +39,7 @@ function renderBeers(beers) {
 
 }
 
-function individualBeer(e){
+const individualBeer = e => {
     const beerId = e.target.id
     fetch(`http://localhost:3000/beers/${beerId}`)
     .then(response => response.json())
@@ -48,7 +48,7 @@ function individualBeer(e){
     });
 }
 
-function renderIndivBeer(beer){
+const renderIndivBeer = beer => {
     let beerDiv = document.getElementById('beer-detail')
     let beerInfo = 
     `<h1>${beer.name}</h1>
@@ -61,7 +61,7 @@ function renderIndivBeer(beer){
     beerDiv.innerHTML = beerInfo
 }
 
-function updateBeer(e){
+const updateBeer = (e) => {
     console.log(e.target)
     const beerId = e.target.dataset.id
     const textArea = e.target.previousElementSibling
@@ -82,6 +82,7 @@ function updateBeer(e){
     .then(response => response.json())
     .then(beer => {
         textArea.innerText = beer.description
+        alert('beer has been updated')
     });
 }
 
