@@ -1,20 +1,18 @@
 
-
 //event listeners
+
 const addBeerListeners = () => {
-    const beerRow = document.getElementById('row')
+    const beerRow = document.getElementById('row');
     beerRow.addEventListener('click', e => {
         if(e.target.className === 'list-group-item'){
-            individualBeer(e)
+            individualBeer(e);
         }
         else if(e.target.id === 'edit-beer') {
-            updateBeer(e)
+            updateBeer(e);
         }
     });
 
 }
-
-
 
 //functions
 
@@ -22,25 +20,27 @@ const fetchAllBeers = () =>{
     fetch('http://localhost:3000/beers')
     .then(response => response.json())
     .then(response => {
-        renderBeers(response)
-        addBeerListeners()
+        renderBeers(response);
+        addBeerListeners();
+    })
+    .catch(error => {
+        alert(error)
+        return Promise.reject()
     });
 }
 
-
 const renderBeers = beers => {
-    console.log(beers)
-    const beerUl = document.getElementById('list-group')
+    const beerUl = document.getElementById('list-group');
     let beerLis = ''
     beers.forEach(beer => {
         beerLis += `<li class="list-group-item" id="${beer.id}">${beer.name}</li>`
     });
-    beerUl.innerHTML = beerLis
+    beerUl.innerHTML = beerLis;
 
 }
 
 const individualBeer = e => {
-    const beerId = e.target.id
+    const beerId = e.target.id;
     fetch(`http://localhost:3000/beers/${beerId}`)
     .then(response => response.json())
     .then(response => {
@@ -49,7 +49,7 @@ const individualBeer = e => {
 }
 
 const renderIndivBeer = beer => {
-    let beerDiv = document.getElementById('beer-detail')
+    let beerDiv = document.getElementById('beer-detail');
     let beerInfo = 
     `<h1>${beer.name}</h1>
     <img src="${beer.image_url}">
@@ -58,14 +58,13 @@ const renderIndivBeer = beer => {
     <button id="edit-beer" class="btn btn-info" data-id= ${beer.id}>
       Save
     </button>`
-    beerDiv.innerHTML = beerInfo
+    beerDiv.innerHTML = beerInfo;
 }
 
 const updateBeer = (e) => {
-    console.log(e.target)
-    const beerId = e.target.dataset.id
-    const textArea = e.target.previousElementSibling
-    const updatedText = textArea.value
+    const beerId = e.target.dataset.id;
+    const textArea = e.target.previousElementSibling;
+    const updatedText = textArea.value;
     const data = {
         description: updatedText
     }
@@ -81,20 +80,15 @@ const updateBeer = (e) => {
     fetch(`http://localhost:3000/beers/${beerId}`, configObj)
     .then(response => response.json())
     .then(beer => {
-        textArea.innerText = beer.description
-        alert('beer has been updated')
+        textArea.innerText = beer.description;
+        alert(`${beer.name}'s description has been updated!`);
     });
 }
-
-
-
-
 
 //execution order 
 
 const main = () => {
-    fetchAllBeers()
+    fetchAllBeers();
 }
-
 
 main()
