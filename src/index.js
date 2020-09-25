@@ -1,12 +1,25 @@
+
+//main executable functions
 function main(){
     beerList()
     listClickEvent()
     showClickEvent()
 }
-
+//global variables
 const beerListGroup = document.querySelector(".list-group")
 const showBeerCont = document.querySelector('#beer-detail')
 
+//event listeners
+
+function listClickEvent() {
+    beerListGroup.addEventListener("click", showBeer)
+}
+
+function showClickEvent(){
+    showBeerCont.addEventListener("click", updateDescription)
+ }
+
+ //show beer list functions
 function beerList() {
     fetch(`http://localhost:3000/beers`)
     .then(resp => resp.json())
@@ -23,14 +36,8 @@ function showBeers(beers) {
     })
 }
 
-function listClickEvent() {
-    beerListGroup.addEventListener("click", showBeer)
-}
 
-function showClickEvent(){
-    showBeerCont.addEventListener("click", updateDescription)
- }
-
+//show individual beer functions
  function showBeer(e) {
     if (e.target.className === 'list-group-item') { 
         const id = e.target.dataset.id 
@@ -53,18 +60,18 @@ function showClickEvent(){
  }
 
  
-
+//function to update the description of beer
  function updateDescription(e){
      if (e.target.className === "btn btn-info"){
-         e.preventDefault()
-         const Newid = e.target.parentNode.dataset.id    
+         //no prevent default because it's not a submit button
+         const id = e.target.parentNode.dataset.id    
          const description = e.target.previousElementSibling.value 
          const reqObj = {
              method: 'PATCH',
              headers: {'Content-Type': 'application/json'},
              body: JSON.stringify({description})
          }
-         fetch(`http://localhost:3000/beers/${Newid}`, reqObj)
+         fetch(`http://localhost:3000/beers/${id}`, reqObj)
          .then(resp => resp.json())
          .then(beer => { 
              showBeerCont.querySelector("textarea").innerHTML = beer.description 
